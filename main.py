@@ -93,7 +93,8 @@ def atualizar():
                 e_preco.insert(0, tree_lista[5])
                 e_descricao.insert(0, tree_lista[6])
 
-         
+        except IndexError:
+            messagebox.showerror('Selecione um dos dados da tabela!')
 # função update
 def update():
         nome = e_nome.get()
@@ -102,6 +103,8 @@ def update():
         pg = e_pg.get()
         preco = e_preco.get()
         descricao = e_descricao.get()
+
+        valor_id = ""
 
         lista = [nome, endereco, pedido, pg, preco, descricao, valor_id]
 
@@ -127,8 +130,7 @@ def update():
                 b_confirmar = Button(frame_baixo, command=update, text='Confirmar', width=10, anchor=NW, font=('Ivy 10 bold'), bg=co2, fg=co1, relief='raised', overrelief='ridge')
                 b_confirmar.place(x=110, y=340)
                
-        except IndexError:
-        messagebox.showerror('Selecione um dos dados da tabela!')
+       
 
 
 # função delete
