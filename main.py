@@ -60,7 +60,7 @@ def inserir():
         if nome == '':
                 messagebox.showerror('Nome não pode ficar vazio!')
         else:
-                atualizar_info(lista)
+                inserir_info(lista)
                 messagebox.showinfo('Os dados foram inseridos com sucesso!')
 
                 e_nome.delete(0, 'end')
@@ -69,6 +69,11 @@ def inserir():
                 e_pg.delete(0, 'end')
                 e_preco.delete(0, 'end')
                 e_descricao.delete(0, 'end')
+
+                for widget in frame_direita.winfo_children():
+                    widget.destroy()
+
+                mostrar()
 
 # função atualizar
 def atualizar():
@@ -93,57 +98,59 @@ def atualizar():
                 e_preco.insert(0, tree_lista[5])
                 e_descricao.insert(0, tree_lista[6])
 
+                # função inserir
+                def update():
+                        nome = e_nome.get()
+                        endereco = e_endereco.get()
+                        pedido = e_pedido.get()
+                        pg = e_pg.get()
+                        preco = e_preco.get()
+                        descricao = e_descricao.get()
+
+                        lista = [nome, endereco, pedido, pg, preco, descricao, valor_id]
+
+                        if nome == '':
+                                messagebox.showerror('Nome não pode ficar vazio!')
+                        else:
+                                atualizar_info(lista)
+                                messagebox.showinfo('Os dados foram atualizados com sucesso!')
+
+                                e_nome.delete(0, 'end')
+                                e_endereco.delete(0, 'end')
+                                e_pedido.delete(0, 'end')
+                                e_pg.delete(0, 'end')
+                                e_preco.delete(0, 'end')
+                                e_descricao.delete(0, 'end')
+
+                        for widget in frame_direita.winfo_children():
+                                widget.destroy()
+
+                        mostrar()
+
+                        # Botao Atualizar
+                        b_confirmar = Button(frame_baixo, command=update, text='Confirmar', width=10, anchor=NW, font=('Ivy 7 bold'), bg=co2, fg=co1, relief='raised', overrelief='ridge')
+                        b_confirmar.place(x=110, y=380)
+
+                        
+
         except IndexError:
-            messagebox.showerror('Selecione um dos dados da tabela!')
-# função update
-def update():
-        nome = e_nome.get()
-        endereco = e_endereco.get()
-        pedido = e_pedido.get()
-        pg = e_pg.get()
-        preco = e_preco.get()
-        descricao = e_descricao.get()
+                messagebox.showerror('Selecione um dos dados da tabela!')
+         
 
-        valor_id = ""
-
-        lista = [nome, endereco, pedido, pg, preco, descricao, valor_id]
-
-        if nome == '':
-                messagebox.showerror('Nome não pode ficar vazio!')
-        else:
-                atualizar_info(lista)
-                messagebox.showinfo('Os dados foram atualizados com sucesso!')
-
-                e_nome.delete(0, 'end')
-                e_endereco.delete(0, 'end')
-                e_pedido.delete(0, 'end')
-                e_pg.delete(0, 'end')
-                e_preco.delete(0, 'end')
-                e_descricao.delete(0, 'end')
-
-        for widget in frame_direita.winfo_children():
-                widget.destroy()
-
-                mostrar()
-
-                # Botao Atualizar
-                b_confirmar = Button(frame_baixo, command=update, text='Confirmar', width=10, anchor=NW, font=('Ivy 10 bold'), bg=co2, fg=co1, relief='raised', overrelief='ridge')
-                b_confirmar.place(x=110, y=340)
                
-       
+        
 
-
-# função delete
+# função deletar
 def deletar():
         try:
                 treev_dados = tree.focus()
                 treev_dicionario = tree.item(treev_dados)
                 tree_lista = treev_dicionario['values']
 
-                valor_id = tree_lista[0]
+                valor_id = [tree_lista[0]]
 
                 deletar_info(valor_id)
-                messagebox.showerror('Os dados foram deletados com sucesso!')
+                messagebox.showinfo('Os dados foram deletados com sucesso!')
 
                 for widget in frame_direita.winfo_children():
                    widget.destroy()
@@ -216,14 +223,17 @@ b_inserir.place(x=110, y=340)
 b_inserir = Button(frame_baixo, command=deletar, text='Deletar', width=10, anchor=NW, font=('Ivy 10 bold'), bg=co7, fg=co1, relief='raised', overrelief='ridge')
 b_inserir.place(x=205, y=340)
 
-################# Frame direita ################3
+################# Frame direita ################
+
+lista = [[ 1, 'Andressa', 'maracanzinho', 'x-burguer', 'pix', 'R$15,00', 'sem cebola']
+        ]
 
 def mostrar():
 
         global tree
                      
         # Lista para cabeçalho 
-        tabela_head = ['ID', 'Nome', 'Endereço', 'Pedido', 'F. pagamento', 'Preço', 'Descrição']
+        tabela_head = ['ID', 'Nome', 'Endereco', 'Pedido', 'F. pagamento', 'Preco', 'Descrição']
 
         # Criando a tabela
         tree = ttk.Treeview(frame_direita, selectmode="extended", columns=tabela_head, show="headings")
@@ -254,17 +264,7 @@ def mostrar():
         for item in lista:
                 tree.insert('', 'end', values=item)
 
-
- 
-
-
         mostrar()
 
-
-
-
-
-
-
-       
+    
 janela.mainloop()
